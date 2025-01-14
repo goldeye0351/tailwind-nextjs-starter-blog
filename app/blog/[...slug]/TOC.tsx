@@ -3,7 +3,7 @@ import styles from './toc.module.css'
 import { useState, useEffect } from 'react'
 
 const TOC = ({ headings }: { headings: any }) => {
-  const [activeSection, setActiveSection] = useState(null)
+  const [activeSection, setActiveSection] = useState<string | null>(null)
 
   useEffect(() => {
     const throttle = (func: Function, limit: number) => {
@@ -20,8 +20,8 @@ const TOC = ({ headings }: { headings: any }) => {
     const actionSectionScrollSpy = throttle(() => {
       const sections = document.getElementsByClassName('content-header')
 
-      let prevBBox = null
-      let currentSectionId = null
+      let prevBBox: DOMRect | null = null
+      let currentSectionId: string | null = null
 
       for (let i = 0; i < sections.length; ++i) {
         const section = sections[i]
@@ -30,7 +30,7 @@ const TOC = ({ headings }: { headings: any }) => {
         const prevHeight = prevBBox ? bbox.top - prevBBox.bottom : 0
         const offset = Math.max(150, prevHeight / 4)
         if (bbox.top - offset < 0) {
-          currentSectionId = section.getAttribute('id') || null
+          currentSectionId = section.getAttribute('id')
           prevBBox = bbox
           continue
         }
