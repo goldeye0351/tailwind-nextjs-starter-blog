@@ -1,6 +1,6 @@
 import 'css/prism.css'
 import 'katex/dist/katex.css'
-
+import TOC from './TOC'
 import PageTitle from '@/components/PageTitle'
 import { components } from '@/components/MDXComponents'
 import { MDXLayoutRenderer } from 'pliny/mdx-components'
@@ -14,7 +14,7 @@ import { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
 import { notFound } from 'next/navigation'
 
-const defaultLayout = 'PostLayout'
+const defaultLayout = 'PostBanner'
 const layouts = {
   PostSimple,
   PostLayout,
@@ -108,13 +108,20 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <Layout content={mainContent} authorDetails={authorDetails} next={next} prev={prev}>
-        <MDXLayoutRenderer code={post.body.code} components={components} toc={post.toc} />
-      </Layout>
+      <div className=" flex flex-row">
+        <div className=" h-[2000px] w-3/4">
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
+          <Layout content={mainContent} authorDetails={authorDetails} next={next} prev={prev}>
+            <MDXLayoutRenderer code={post.body.code} components={components} toc={post.toc} />
+          </Layout>
+        </div>
+        <div className=" fixed bottom-0 right-0 w-1/4">
+          <TOC headings={post.toc} />
+        </div>
+      </div>
     </>
   )
 }
